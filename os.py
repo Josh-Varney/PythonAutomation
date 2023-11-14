@@ -9,6 +9,16 @@ def list_directory(destination_path):
         print(e)
     except Exception as ex:
         print(ex)
+        
+def sort_directory(sourcePath):
+    os.chdir(sourcePath)
+    for file in os.listdir():
+        findDot = file.rfind('.')
+        if findDot < 0 or file[findDot:] == '.DS_Store':
+            continue
+        else:
+            prefix = file[findDot:]
+            print(prefix)
 
 
 def rename_file(old_file_path, new_file_path):
@@ -72,4 +82,6 @@ if __name__ == '__main__':
     current_dir = "/Users/josh-v/Downloads"
     prefix = 'jpg'
     os.chdir(current_dir)
-    create_folder("/Users/josh-v/Documents", current_dir, prefix) 
+    # create_folder("/Users/josh-v/Documents", current_dir, prefix) 
+    sort_directory(current_dir)
+    
