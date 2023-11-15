@@ -11,6 +11,7 @@ def list_directory(destination_path):
         print(ex)
         
 def sort_directory(sourcePath):
+    list = []
     os.chdir(sourcePath)
     for file in os.listdir():
         findDot = file.rfind('.')
@@ -18,8 +19,9 @@ def sort_directory(sourcePath):
             continue
         else:
             prefix = file[findDot:]
-            print(prefix)
-
+            if prefix not in list:
+                list.append(prefix)
+    return list
 
 def rename_file(old_file_path, new_file_path):
     try:
@@ -43,14 +45,25 @@ def move_files(destination_path, current_path, data):
 
 def create_folder(specified_path, filePath, prefix):
     try:
-        # New Path
-        newPath = os.path.join(specified_path, prefix)
+        # Specified Path - Documents Folder
+        # File Path - Downloads Folder - Folder to Sort
+        
+        # print(checkPrefix)  #.docx
+        # print(prefix)   #DOCX
+        checkPrefix = prefix
+        prefix = prefix.replace('.', '').upper()
+        
+    
+        newPath = os.path.join(specified_path, prefix)  
+        # NewPath uses Specified Path - Folder produced in NewPath
         if not os.path.exists(newPath):
             os.makedirs(newPath)
-        else:
-            print('Folder already exists')
             
-        data = format_folder(filePath, prefix)
+       # Formats data of Downloads Folder, Uses check prefixes   
+        print(filePath)
+        data = format_folder(filePath, checkPrefix)  # Bug 
+        print(data)
+
         # Checks if data is available
         if not data:  
             return 
@@ -63,25 +76,18 @@ def create_folder(specified_path, filePath, prefix):
 
 def format_folder(current_path, prefix):
     arr = []
+    print(arr)
     for file in os.listdir(current_path):
-        if file.lower().endswith(f".{prefix}"):
+        print(file)
+        if file.lower().endswith(f"{prefix}"):
             old_file = os.path.join(current_path, file)
             new_file = ''.join(file.split("-"))
             new_file = os.path.join(current_path, file)
             rename_file(old_file, new_file) # Renames Files
             arr.append(new_file)  
-        else:
-            continue
-
+            
     if arr:
         arr = sorted(arr)
     return arr
 
 
-if __name__ == '__main__':
-    current_dir = "/Users/josh-v/Downloads"
-    prefix = 'jpg'
-    os.chdir(current_dir)
-    # create_folder("/Users/josh-v/Documents", current_dir, prefix) 
-    sort_directory(current_dir)
-    
